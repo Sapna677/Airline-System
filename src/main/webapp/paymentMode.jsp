@@ -49,6 +49,14 @@ try (Connection con = DatabaseUtil.getCon();
 	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
 	crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="css/style.css">
+<style>
+.tab-content {
+	display: none;
+}
+.tab-content.active {
+	display: block !important;
+}
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     // Dynamically inject FontAwesome if not already present
