@@ -46,7 +46,7 @@ public class MailUtil {
             String payload = "{"
                     + "\"sender\":{"
                     + "  \"name\":\"SkyGlide Airways Team\","
-                    + "  \"email\":\"sapnakumri670@gmail.com\""
+                    + "  \"email\":\"" + getSmtpUser() + "\""
                     + "},"
                     + "\"to\":[{"
                     + "  \"email\":\"" + recipientEmail + "\","
