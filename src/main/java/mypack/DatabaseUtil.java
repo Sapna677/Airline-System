@@ -33,7 +33,7 @@ public class DatabaseUtil {
 
             if (dbUrl == null || dbUrl.isEmpty()) {
                 String envUrl = System.getenv("DATABASE_URL");
-                if (envUrl != null && !envUrl.isEmpty() && envUrl.startsWith("postgres://")) {
+                if (envUrl != null && !envUrl.isEmpty() && (envUrl.startsWith("postgres://") || envUrl.startsWith("postgresql://"))) {
                     try {
                         URI uri = new URI(envUrl);
                         String userInfo = uri.getUserInfo();
