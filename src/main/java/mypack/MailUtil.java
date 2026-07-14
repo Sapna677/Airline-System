@@ -18,6 +18,68 @@ public class MailUtil {
         return (envPass != null && !envPass.trim().isEmpty()) ? envPass : "ocuvvfgqypkcbwup";
     }
 
+    private static boolean sendEmailViaGas(String recipientEmail, String subject, String htmlContent) {
+        String gasUrl = System.getenv("GAS_URL");
+        if (gasUrl == null || gasUrl.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            java.net.URL url = new java.net.URL(gasUrl);
+            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("content-type", "application/json");
+            conn.setInstanceFollowRedirects(true);
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+
+            // Construct JSON payload securely
+            String escapedHtml = htmlContent.replace("\\", "\\\\")
+                                            .replace("\"", "\\\"");
+            escapedHtml = escapedHtml.replace("\n", "\\n").replace("\r", "");
+            String escapedSubject = subject.replace("\"", "\\\"");
+
+            String payload = "{"
+                    + "\"to\":\"" + recipientEmail + "\","
+                    + "\"subject\":\"" + escapedSubject + "\","
+                    + "\"body\":\"" + escapedHtml + "\""
+                    + "}";
+
+            try (java.io.OutputStream os = conn.getOutputStream()) {
+                byte[] input = payload.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int code = conn.getResponseCode();
+            // Handle Apps Script Web App Redirects (302) across domains
+            if (code == 302 || code == 301 || code == 307) {
+                String newUrl = conn.getHeaderField("Location");
+                conn = (java.net.HttpURLConnection) new java.net.URL(newUrl).openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("content-type", "application/json");
+                conn.setDoOutput(true);
+                try (java.io.OutputStream os = conn.getOutputStream()) {
+                    byte[] input = payload.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+                code = conn.getResponseCode();
+            }
+
+            if (code >= 200 && code < 300) {
+                System.out.println("Email sent successfully via Google Apps Script Mail Relay.");
+                return true;
+            } else {
+                System.err.println("Google Apps Script returned error code: " + code);
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error sending email via Google Apps Script: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private static boolean sendEmailViaBrevo(String recipientEmail, String recipientName, String subject, String htmlContent) {
         String apiKey = System.getenv("BREVO_API_KEY");
         if (apiKey == null || apiKey.trim().isEmpty()) {
@@ -98,12 +160,24 @@ public class MailUtil {
                 + "<p style='font-size: 0.8rem; color: #9ca3af; text-align: center;'>This is an automated email. Please do not reply directly.</p>"
                 + "</div>";
 
+        String gasUrl = System.getenv("GAS_URL");
         String apiKey = System.getenv("BREVO_API_KEY");
         System.out.println("=== EMAIL INITIATION (sendOTP) ===");
         System.out.println("Recipient: " + recipientEmail);
+        System.out.println("GAS URL present: " + (gasUrl != null && !gasUrl.trim().isEmpty()));
         System.out.println("Brevo API Key present: " + (apiKey != null && !apiKey.trim().isEmpty()));
 
-        // Try Brevo HTTP API first if key exists
+        // Try Google Apps Script first if configured
+        if (gasUrl != null && !gasUrl.trim().isEmpty()) {
+            System.out.println("Attempting email send via Google Apps Script...");
+            boolean isSent = sendEmailViaGas(recipientEmail, "Airlines Registration OTP Verification", htmlContent);
+            if (isSent) {
+                return true;
+            }
+            System.out.println("Google Apps Script failed, falling back to next mail sender...");
+        }
+
+        // Try Brevo HTTP API second if key exists
         if (apiKey != null && !apiKey.trim().isEmpty()) {
             System.out.println("Attempting HTTP email send via Brevo API...");
             boolean isSent = sendEmailViaBrevo(recipientEmail, "Valued Customer", "Airlines Registration OTP Verification", htmlContent);
@@ -169,7 +243,16 @@ public class MailUtil {
                 + "</div>"
                 + "</div>";
 
-        // Try Brevo HTTP API first if key exists
+        // Try Google Apps Script first if configured
+        String gasUrl = System.getenv("GAS_URL");
+        if (gasUrl != null && !gasUrl.trim().isEmpty()) {
+            boolean isSent = sendEmailViaGas(recipientEmail, "SkyGlide Airways - Booking Confirmation for Flight " + flightNumber, htmlContent);
+            if (isSent) {
+                return true;
+            }
+        }
+
+        // Try Brevo HTTP API second if key exists
         String apiKey = System.getenv("BREVO_API_KEY");
         if (apiKey != null && !apiKey.trim().isEmpty()) {
             boolean isSent = sendEmailViaBrevo(recipientEmail, passengerName, "SkyGlide Airways - Booking Confirmation for Flight " + flightNumber, htmlContent);
