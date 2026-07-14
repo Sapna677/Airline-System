@@ -66,7 +66,17 @@ public class MailUtil {
                 System.out.println("Email sent successfully via Brevo HTTP API.");
                 return true;
             } else {
-                System.err.println("Brevo HTTP API returned code: " + code);
+                System.err.println("Brevo HTTP API returned error code: " + code);
+                try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getErrorStream(), "utf-8"))) {
+                    StringBuilder errorResponse = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        errorResponse.append(line.trim());
+                    }
+                    System.err.println("Brevo API Error Detail: " + errorResponse.toString());
+                } catch (Exception err) {
+                    System.err.println("Failed to read Brevo API error details: " + err.getMessage());
+                }
                 return false;
             }
         } catch (Exception e) {
@@ -88,13 +98,19 @@ public class MailUtil {
                 + "<p style='font-size: 0.8rem; color: #9ca3af; text-align: center;'>This is an automated email. Please do not reply directly.</p>"
                 + "</div>";
 
-        // Try Brevo HTTP API first if key exists
         String apiKey = System.getenv("BREVO_API_KEY");
+        System.out.println("=== EMAIL INITIATION (sendOTP) ===");
+        System.out.println("Recipient: " + recipientEmail);
+        System.out.println("Brevo API Key present: " + (apiKey != null && !apiKey.trim().isEmpty()));
+
+        // Try Brevo HTTP API first if key exists
         if (apiKey != null && !apiKey.trim().isEmpty()) {
+            System.out.println("Attempting HTTP email send via Brevo API...");
             boolean isSent = sendEmailViaBrevo(recipientEmail, "Valued Customer", "Airlines Registration OTP Verification", htmlContent);
             if (isSent) {
                 return true;
             }
+            System.out.println("Brevo HTTP API failed, falling back to Gmail SMTP...");
         }
 
         // Fallback to Gmail SMTP if Brevo fails or is not configured

@@ -21,6 +21,10 @@ if (name == null || password == null || email == null) {
 
 // Generate a 6-digit OTP
 String otp = String.valueOf(100000 + new java.util.Random().nextInt(900000));
+System.out.println("=== SIGNUP OTP GENERATED ===");
+System.out.println("Email: " + email);
+System.out.println("OTP Code: " + otp);
+System.out.println("============================");
 
 // Store registration details in session temporarily
 session.setAttribute("signup_username", name);
