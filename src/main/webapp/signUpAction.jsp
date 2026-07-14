@@ -35,14 +35,16 @@ session.setAttribute("signup_usertype", type);
 session.setAttribute("signup_otp", otp);
 
 // Read SMTP credentials from environment variables with fallbacks
-String from = System.getenv("SMTP_USER");
-String pass = System.getenv("SMTP_PASSWORD");
-if (from == null || from.trim().isEmpty()) {
-	from = "sapnakumri670@gmail.com"; 
+String envFrom = System.getenv("SMTP_USER");
+String envPass = System.getenv("SMTP_PASSWORD");
+if (envFrom == null || envFrom.trim().isEmpty()) {
+	envFrom = "sapnakumri670@gmail.com"; 
 }
-if (pass == null || pass.trim().isEmpty()) {
-	pass = "ocuvvfgqypkcbwup"; 
+if (envPass == null || envPass.trim().isEmpty()) {
+	envPass = "ocuvvfgqypkcbwup"; 
 }
+final String from = envFrom;
+final String pass = envPass;
 String host = "smtp.gmail.com";
 
 Properties properties = new Properties();
