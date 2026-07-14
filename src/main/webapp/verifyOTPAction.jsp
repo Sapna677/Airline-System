@@ -72,8 +72,6 @@ if (submittedOtp.equals(sessionOtp)) {
 		response.sendRedirect("index.jsp?msg=Error&error=" + e.getMessage());
 	} finally {
 		try {
-			if (rs != null) rs.close();
-			if (stmtSelect != null) stmtSelect.close();
 			if (ps != null) ps.close();
 			if (con != null) con.close();
 		} catch (SQLException e) {
