@@ -876,14 +876,31 @@ footer .footer-section .footer-subscribe button:hover {
 
 @media (max-width: 600px) {
     nav {
-        padding: 0 20px;
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+        gap: 12px;
+        position: relative;
+        text-align: center;
+    }
+    .page-container {
+        padding-top: 20px;
+        min-height: calc(100vh - 20px);
     }
     nav ul {
-        display: none; /* simple mobile fallback */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 8px;
+    }
+    nav ul li a {
+        padding: 6px 12px;
+        font-size: 0.85rem;
     }
     .glass-card, main.standalone-container {
         padding: 25px 20px;
-        margin: 20px auto;
+        margin: 15px auto;
     }
     .hero-section h1 {
         font-size: 2rem;
