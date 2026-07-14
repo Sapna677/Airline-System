@@ -137,6 +137,7 @@ footer {
 	margin: 95px 0px 0px 0px;
 }
 </style>
+<script src="../js/theme.js"></script>
 </head>
 <body>
 	<nav>

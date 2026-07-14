@@ -274,6 +274,7 @@ nav ul li a.active {
 }
 
 </style>
+<script src="../js/theme.js"></script>
 </head>
 <body>
 	<div class="overlay">

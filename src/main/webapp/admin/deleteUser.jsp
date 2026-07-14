@@ -86,6 +86,7 @@ footer {
 	color: white;
 }
 </style>
+<script src="../js/theme.js"></script>
 </head>
 <body>
 	<nav>

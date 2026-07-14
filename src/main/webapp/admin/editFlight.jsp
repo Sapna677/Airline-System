@@ -75,6 +75,7 @@ p.message {
 	color: #333;
 }
 </style>
+<script src="../js/theme.js"></script>
 </head>
 <body>
 	<h1>Edit Flight</h1>

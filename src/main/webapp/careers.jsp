@@ -540,6 +540,7 @@
             }
         });
     </script>
+<script src="js/theme.js"></script>
 </head>
 <body>
     <!-- Background overlay -->

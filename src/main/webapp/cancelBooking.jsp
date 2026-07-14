@@ -32,6 +32,7 @@ body {
 	color: red;
 }
 </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
 	<h1>Cancel Booking</h1>

@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <title>Login</title>
+<script src="js/theme.js"></script>
 </head>
 <body>
 	<!-- Background video -->

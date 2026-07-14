@@ -1190,3 +1190,11 @@ body, nav, .glass-card, .standalone-container, input, select, button, a {
         text-align: center;
     }
 }
+
+/* Scroll to Hide Navbar styles */
+nav {
+    transition: transform 0.3s ease-in-out, background var(--transition-smooth), backdrop-filter var(--transition-smooth) !important;
+}
+nav.nav-hidden {
+    transform: translateY(-100%) !important;
+}

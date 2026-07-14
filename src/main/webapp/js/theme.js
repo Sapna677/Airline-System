@@ -78,4 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         logoDiv.appendChild(logoText);
     }
+
+    // 3. Scroll-to-Hide Navigation Bar Logic
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (nav && window.innerWidth > 600) {
+            if (window.scrollY > lastScrollY && window.scrollY > 80) {
+                nav.classList.add('nav-hidden');
+            } else {
+                nav.classList.remove('nav-hidden');
+            }
+        }
+        lastScrollY = window.scrollY;
+    });
 });

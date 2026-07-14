@@ -34,6 +34,7 @@
             border: 1px solid rgba(99, 102, 241, 0.3);
         }
     </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
     <nav>

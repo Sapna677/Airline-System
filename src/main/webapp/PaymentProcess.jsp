@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script src="js/theme.js"></script>
 </head>
 <body>
 	<!-- Background video -->
@@ -496,7 +497,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         text-align: center;
                     }
                 </style>
-            </head>
+            <script src="js/theme.js"></script>
+</head>
             <body>
                 <div class="ticket-container">
         `;

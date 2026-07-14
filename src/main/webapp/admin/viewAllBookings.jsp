@@ -67,6 +67,7 @@
             margin-top: 20px;
         }
     </style>
+<script src="../js/theme.js"></script>
 </head>
 <body>
     <h1>View All Bookings</h1>

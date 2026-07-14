@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <title>Contact Us</title>
+<script src="js/theme.js"></script>
 </head>
 <body>
 	<!-- Background video -->

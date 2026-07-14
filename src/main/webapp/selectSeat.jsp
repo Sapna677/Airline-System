@@ -157,6 +157,7 @@
             text-align: center;
         }
     </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
     <nav>

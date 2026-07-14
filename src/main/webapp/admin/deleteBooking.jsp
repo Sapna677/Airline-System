@@ -44,6 +44,7 @@
             text-decoration: underline;
         }
     </style>
+<script src="../js/theme.js"></script>
 </head>
 <body>
     <%
