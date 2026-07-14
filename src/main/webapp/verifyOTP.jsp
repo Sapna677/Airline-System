@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			<form action="verifyOTPAction.jsp" method="post">
 				<label for="otp" style="text-align: left; display: block;">Verification Code</label>
-				<input type="text" id="otp" name="otp" placeholder="Enter 6-digit code" pattern="\d{6}" maxlength="6" required style="letter-spacing: 4px; text-align: center; font-size: 1.25rem;">
+				<input type="text" id="otp" name="otp" value="<%= "demoOtp".equals(msg) && demoOtp != null ? demoOtp : "" %>" placeholder="Enter 6-digit code" pattern="\d{6}" maxlength="6" required style="letter-spacing: 4px; text-align: center; font-size: 1.25rem;">
 				
 				<input type="submit" value="Verify & Register" style="margin-top: 15px;">
 			</form>
