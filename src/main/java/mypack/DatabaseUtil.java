@@ -99,6 +99,60 @@ public class DatabaseUtil {
         if (isInitialized) return;
         isInitialized = true;
         
+        // 0. Automatically create tables if they do not exist (critical for fresh cloud databases like Render)
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (" +
+                               "    user_id SERIAL PRIMARY KEY," +
+                               "    username VARCHAR(255) NOT NULL," +
+                               "    password VARCHAR(255) NOT NULL," +
+                               "    email VARCHAR(255) NOT NULL UNIQUE," +
+                               "    firstName VARCHAR(255)," +
+                               "    lastName VARCHAR(255)," +
+                               "    phone VARCHAR(50)," +
+                               "    address VARCHAR(255)," +
+                               "    dob DATE," +
+                               "    usertype VARCHAR(50) DEFAULT 'user'" +
+                               ")");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS flights (" +
+                               "    flight_id SERIAL PRIMARY KEY," +
+                               "    flight_number VARCHAR(50) NOT NULL," +
+                               "    departure VARCHAR(255) NOT NULL," +
+                               "    arrival VARCHAR(255) NOT NULL," +
+                               "    date TIMESTAMP NOT NULL," +
+                               "    price VARCHAR(50) NOT NULL" +
+                               ")");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS payments (" +
+                               "    payment_id SERIAL PRIMARY KEY," +
+                               "    name VARCHAR(255) NOT NULL," +
+                               "    email VARCHAR(255) NOT NULL," +
+                               "    paymentMode VARCHAR(50) NOT NULL," +
+                               "    cardNumber VARCHAR(50)," +
+                               "    expiry VARCHAR(10)," +
+                               "    cvv VARCHAR(5)" +
+                               ")");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS bookings (" +
+                               "    booking_id SERIAL PRIMARY KEY," +
+                               "    flight_id INT NOT NULL," +
+                               "    flight_number VARCHAR(50) NOT NULL," +
+                               "    departure VARCHAR(255) NOT NULL," +
+                               "    arrival VARCHAR(255) NOT NULL," +
+                               "    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                               "    user_id INT NOT NULL," +
+                               "    payment_id VARCHAR(50) DEFAULT 'PENDING'," +
+                               "    seat_number VARCHAR(50)," +
+                               "    passenger_name VARCHAR(255)," +
+                               "    passenger_age INT," +
+                               "    passenger_gender VARCHAR(50)," +
+                               "    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE" +
+                               ")");
+            System.out.println("All schema tables verified/created successfully.");
+        } catch (Exception e) {
+            System.err.println("Database schema creation warning: " + e.getMessage());
+        }
+
         // 1. Schema migration: convert user_id to auto-incrementing sequence
         try (Statement stmt = con.createStatement()) {
             stmt.executeUpdate("CREATE SEQUENCE IF NOT EXISTS users_user_id_seq");
