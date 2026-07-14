@@ -5,12 +5,18 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class MailUtil {
-    // SMTP Configuration parameters (configure as needed)
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
     
-    private static final String SMTP_USER = "sapnakumri670@gmail.com"; 
-    private static final String SMTP_PASSWORD = "ocuvvfgqypkcbwup";  
+    private static String getSmtpUser() {
+        String envUser = System.getenv("SMTP_USER");
+        return (envUser != null && !envUser.trim().isEmpty()) ? envUser : "sapnakumri670@gmail.com";
+    }
+
+    private static String getSmtpPassword() {
+        String envPass = System.getenv("SMTP_PASSWORD");
+        return (envPass != null && !envPass.trim().isEmpty()) ? envPass : "ocuvvfgqypkcbwup";
+    }
 
     public static boolean sendOTP(String recipientEmail, String otp) {
         Properties props = new Properties();
@@ -19,17 +25,22 @@ public class MailUtil {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.connectiontimeout", "5000"); // 5s connection timeout
+        props.put("mail.smtp.timeout", "5000");           // 5s read timeout
+
+        final String smtpUser = getSmtpUser();
+        final String smtpPass = getSmtpPassword();
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(SMTP_USER, SMTP_PASSWORD);
+                return new PasswordAuthentication(smtpUser, smtpPass);
             }
         });
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(SMTP_USER, "SkyGlide Airways Team"));
+            message.setFrom(new InternetAddress(smtpUser, "SkyGlide Airways Team"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
             message.setSubject("Airlines Registration OTP Verification");
 
@@ -60,17 +71,22 @@ public class MailUtil {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.connectiontimeout", "5000"); // 5s connection timeout
+        props.put("mail.smtp.timeout", "5000");           // 5s read timeout
+
+        final String smtpUser = getSmtpUser();
+        final String smtpPass = getSmtpPassword();
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(SMTP_USER, SMTP_PASSWORD);
+                return new PasswordAuthentication(smtpUser, smtpPass);
             }
         });
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(SMTP_USER, "SkyGlide Airways Team"));
+            message.setFrom(new InternetAddress(smtpUser, "SkyGlide Airways Team"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
             message.setSubject("SkyGlide Airways - Booking Confirmation for Flight " + flightNumber);
 
