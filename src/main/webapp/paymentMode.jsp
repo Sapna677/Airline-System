@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	</div>
 
 	<script>
-		let basePrice = <%=Double.parseDouble(price.replace(",", ""))%>;
+		let basePrice = parseFloat("<%= (price != null) ? price.replace("INR", "").replace(",", "").trim() : "1000" %>");
 		let discount = 0;
 		let promoApplied = false;
 

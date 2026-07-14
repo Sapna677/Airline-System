@@ -484,13 +484,12 @@
             for (let i = 0; i < numPassengers; i++) {
                 const sOut = selectedSeatsOutbound[i] || "";
                 const sRet = selectedSeatsReturn[i] || "";
-                formInputsContainer.innerHTML += `
-                    <input type="hidden" name="passengerName" value="${passengerNames[i]}">
-                    <input type="hidden" name="passengerAge" value="${passengerAges[i]}">
-                    <input type="hidden" name="passengerGender" value="${passengerGenders[i]}">
-                    <input type="hidden" name="passengerSeat" value="${sOut}">
-                    <input type="hidden" name="passengerReturnSeat" value="${sRet}">
-                `;
+                formInputsContainer.innerHTML += 
+                    '<input type="hidden" name="passengerName" value="' + passengerNames[i] + '">' +
+                    '<input type="hidden" name="passengerAge" value="' + passengerAges[i] + '">' +
+                    '<input type="hidden" name="passengerGender" value="' + passengerGenders[i] + '">' +
+                    '<input type="hidden" name="passengerSeat" value="' + sOut + '">' +
+                    '<input type="hidden" name="passengerReturnSeat" value="' + sRet + '">';
             }
         }
 
