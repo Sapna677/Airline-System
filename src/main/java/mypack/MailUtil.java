@@ -10,7 +10,7 @@ public class MailUtil {
     
     private static String getSmtpUser() {
         String envUser = System.getenv("SMTP_USER");
-        return (envUser != null && !envUser.trim().isEmpty()) ? envUser : "sapnakumri670@gmail.com";
+        return (envUser != null && !envUser.trim().isEmpty()) ? envUser : "sapnakri039@gmail.com";
     }
 
     private static String getSmtpPassword() {
