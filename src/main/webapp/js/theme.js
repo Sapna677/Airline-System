@@ -355,6 +355,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') submitUserMessage();
     });
 
+    // Stop propagation of click events inside chatbot window to prevent auto-closing
+    botWindow.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
     // Close chatbot if clicking outside
     document.addEventListener('click', (e) => {
         if (botWindow.style.display === 'flex' && !botContainer.contains(e.target)) {
