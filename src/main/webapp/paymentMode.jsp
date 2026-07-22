@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		</button>
 	</div>
 
-	<div class="page-container" style="justify-content: center; align-items: center; min-height: 100vh; padding-top: 40px; padding-bottom: 40px;">
+	<div class="page-container" style="justify-content: center; align-items: center; min-height: 100vh; padding: 40px 15px;">
 		<div class="glass-card" style="max-width: 600px; width: 100%;">
 			<h2 style="margin-bottom: 10px; font-weight: 700;"><i class="fas fa-shield-alt"></i> Secure Checkout</h2>
 			<p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 0.95rem;">Please review your flight and select a payment option.</p>

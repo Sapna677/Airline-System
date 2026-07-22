@@ -1173,13 +1173,30 @@ body, nav, .glass-card, .standalone-container, input, select, button, a {
         grid-template-columns: 1fr !important;
         gap: 15px !important;
     }
+    body {
+        display: flex;
+        flex-direction: column;
+    }
     .btn-nav-floating {
-        position: relative;
-        top: 0;
-        right: 0;
-        margin-bottom: 20px;
+        order: 9999;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+        margin: 30px auto 20px auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        width: 100%;
+        max-width: 300px;
+    }
+    .btn-nav-floating button {
+        width: 100%;
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
         display: flex;
         justify-content: center;
+        align-items: center;
     }
     .dashboard-actions {
         flex-direction: column;
