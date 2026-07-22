@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         text-align: center;
                     }
                 </style>
-            <script src="js/theme.js"></script>
+            <script src="js/theme.js"><\/script>
 </head>
             <body>
                 <div class="ticket-container">
