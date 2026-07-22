@@ -13,6 +13,8 @@ import java.net.URI;
 
 public class DatabaseUtil {
     private static boolean isInitialized = false;
+    private static long lastFlightCheckTime = 0;
+    private static final Object flightLock = new Object();
 
     public static Connection getCon() {
         Connection con = null;
@@ -68,6 +70,17 @@ public class DatabaseUtil {
             
             // Check and populate dynamic flights
             initializeDatabase(con);
+            
+            // Periodically check and populate flights (once per hour max)
+            long now = System.currentTimeMillis();
+            if (now - lastFlightCheckTime > 3600000) { // 1 hour
+                synchronized(flightLock) {
+                    if (now - lastFlightCheckTime > 3600000) {
+                        lastFlightCheckTime = now;
+                        checkAndPopulateFlights(con);
+                    }
+                }
+            }
             
         } catch (ClassNotFoundException e) {
             System.err.println("Database Driver not found: " + e.getMessage());
@@ -190,6 +203,10 @@ public class DatabaseUtil {
         }
 
         // 3. Dynamic flight scheduler initialization
+        checkAndPopulateFlights(con);
+    }
+
+    private static void checkAndPopulateFlights(Connection con) {
         try {
             int flightCount = 0;
             try (PreparedStatement pstmt = con.prepareStatement("SELECT COUNT(*) FROM flights WHERE date >= CURRENT_DATE")) {
@@ -205,7 +222,7 @@ public class DatabaseUtil {
                 populateFlights(con);
             }
         } catch (Exception e) {
-            System.err.println("Error initializing dynamic flights: " + e.getMessage());
+            System.err.println("Error check/populate flights: " + e.getMessage());
         }
     }
     
