@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <title>Contact Us</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="js/theme.js"></script>
 </head>
 <body>
@@ -154,8 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
 						<a href="https://www.whatsapp.com/" class="s-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
 					</div>
 				</div>
-				<div class="map-card">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10169245.332449624!2d-19.645046149999974!3d51.5182443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b2a3fbb08a5%3A0xa0d599016699b7ff!2sTravel%20Center!5e0!3m2!1sfr!2suk!4v1704819178119!5m2!1sfr!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+				<div class="map-card" style="padding: 0; overflow: hidden; position: relative;">
+					<div id="airport-map" style="width: 100%; height: 100%; min-height: 450px;"></div>
 				</div>
 			</div>
 		</main>
@@ -200,7 +202,68 @@ document.addEventListener('DOMContentLoaded', () => {
 			</div>
 		</footer>
 	</div>
-</body>
-</html>
+
+	<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		// Initialize the map centered on India (geographical center)
+		const map = L.map('airport-map', {
+			scrollWheelZoom: false // Disable zoom on scroll for better page navigation
+		}).setView([20.5937, 78.9629], 5);
+
+		// Use a premium Dark Matter tile layer to match our dark theme
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+			subdomains: 'abcd',
+			maxZoom: 20
+		}).addTo(map);
+
+		// List of major airports in India with names, codes, coordinates, and Google Maps search links
+		const airports = [
+			{ name: "Indira Gandhi International Airport", code: "DEL", city: "New Delhi", state: "Delhi", lat: 28.5562, lng: 77.1000, link: "https://www.google.com/maps/search/?api=1&query=Indira+Gandhi+International+Airport+Delhi" },
+			{ name: "Chhatrapati Shivaji Maharaj International Airport", code: "BOM", city: "Mumbai", state: "Maharashtra", lat: 19.0896, lng: 72.8656, link: "https://www.google.com/maps/search/?api=1&query=Chhatrapati+Shivaji+Maharaj+International+Airport+Mumbai" },
+			{ name: "Kempegowda International Airport", code: "BLR", city: "Bengaluru", state: "Karnataka", lat: 13.1986, lng: 77.7066, link: "https://www.google.com/maps/search/?api=1&query=Kempegowda+International+Airport+Bengaluru" },
+			{ name: "Netaji Subhash Chandra Bose International Airport", code: "CCU", city: "Kolkata", state: "West Bengal", lat: 22.6547, lng: 88.4467, link: "https://www.google.com/maps/search/?api=1&query=Netaji+Subhash+Chandra+Bose+International+Airport+Kolkata" },
+			{ name: "Chennai International Airport", code: "MAA", city: "Chennai", state: "Tamil Nadu", lat: 12.9941, lng: 80.1709, link: "https://www.google.com/maps/search/?api=1&query=Chennai+International+Airport" },
+			{ name: "Rajiv Gandhi International Airport", code: "HYD", city: "Hyderabad", state: "Telangana", lat: 17.2403, lng: 78.4294, link: "https://www.google.com/maps/search/?api=1&query=Rajiv+Gandhi+International+Airport+Hyderabad" },
+			{ name: "Jayprakash Narayan Airport", code: "PAT", city: "Patna", state: "Bihar", lat: 25.5913, lng: 85.0880, link: "https://www.google.com/maps/search/?api=1&query=Jayprakash+Narayan+Airport+Patna" },
+			{ name: "Pune Airport", code: "PNQ", city: "Pune", state: "Maharashtra", lat: 18.5822, lng: 73.9197, link: "https://www.google.com/maps/search/?api=1&query=Pune+Airport" },
+			{ name: "Goa International Airport", code: "GOI", city: "Dabolim", state: "Goa", lat: 15.3808, lng: 73.8314, link: "https://www.google.com/maps/search/?api=1&query=Goa+International+Airport" },
+			{ name: "Jaipur International Airport", code: "JAI", city: "Jaipur", state: "Rajasthan", lat: 26.8242, lng: 75.8122, link: "https://www.google.com/maps/search/?api=1&query=Jaipur+International+Airport" },
+			{ name: "Sardar Vallabhbhai Patel International Airport", code: "AMD", city: "Ahmedabad", state: "Gujarat", lat: 23.0772, lng: 72.6347, link: "https://www.google.com/maps/search/?api=1&query=Sardar+Vallabhbhai+Patel+International+Airport" },
+			{ name: "Cochin International Airport", code: "COK", city: "Kochi", state: "Kerala", lat: 10.1520, lng: 76.4018, link: "https://www.google.com/maps/search/?api=1&query=Cochin+International+Airport" },
+			{ name: "Chaudhary Charan Singh International Airport", code: "LKO", city: "Lucknow", state: "Uttar Pradesh", lat: 26.7606, lng: 80.8893, link: "https://www.google.com/maps/search/?api=1&query=Chaudhary+Charan+Singh+International+Airport" },
+			{ name: "Sri Guru Ram Dass Jee International Airport", code: "ATQ", city: "Amritsar", state: "Punjab", lat: 31.7096, lng: 74.7997, link: "https://www.google.com/maps/search/?api=1&query=Sri+Guru+Ram+Dass+Jee+International+Airport" },
+			{ name: "Biju Patnaik International Airport", code: "BBI", city: "Bhubaneswar", state: "Odisha", lat: 20.2444, lng: 85.8178, link: "https://www.google.com/maps/search/?api=1&query=Biju+Patnaik+International+Airport" }
+		];
+
+		// Custom interactive plane marker icon
+		const planeIcon = L.divIcon({
+			html: `<div style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.45); cursor: pointer; transition: all 0.2s ease;">
+					<i class="fas fa-plane" style="transform: rotate(-45deg); font-size: 13px;"></i>
+				   </div>`,
+			className: 'custom-plane-marker',
+			iconSize: [32, 32],
+			iconAnchor: [16, 16],
+			popupAnchor: [0, -16]
+		});
+
+		// Add markers to map with beautiful styled popup details
+		airports.forEach(airport => {
+			const marker = L.marker([airport.lat, airport.lng], { icon: planeIcon }).addTo(map);
+			
+			const popupHTML = `
+				<div style="font-family: 'Outfit', sans-serif; padding: 6px; color: #0f172a; min-width: 190px; text-align: left;">
+					<h4 style="margin: 0 0 6px 0; color: #4f46e5; font-size: 0.95rem; font-weight: 700; line-height: 1.3;">${airport.name}</h4>
+					<p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #64748b;"><strong style="color: #475569;">IATA Code:</strong> ${airport.code}</p>
+					<p style="margin: 0 0 10px 0; font-size: 0.8rem; color: #64748b;"><strong style="color: #475569;">State/City:</strong> ${airport.city}, ${airport.state}</p>
+					<a href="${airport.link}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; text-decoration: none; padding: 7px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; box-shadow: 0 3px 8px rgba(99, 102, 241, 0.25); transition: all 0.2s ease;">
+						<i class="fas fa-map-marked-alt" style="margin-right: 4px;"></i> View on Google Maps
+					</a>
+				</div>
+			`;
+			marker.bindPopup(popupHTML);
+		});
+	});
+	</script>
 </body>
 </html>
