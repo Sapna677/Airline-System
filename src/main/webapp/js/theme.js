@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         const nav = document.querySelector('nav');
         if (nav && window.innerWidth > 600) {
+            if (nav.classList.contains('nav-open')) return;
             if (window.scrollY > lastScrollY && window.scrollY > 80) {
                 nav.classList.add('nav-hidden');
             } else {
@@ -92,4 +93,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lastScrollY = window.scrollY;
     });
+
+    // 4. Mobile Navigation Menu Toggle
+    const navElement = document.querySelector('nav');
+    if (navElement) {
+        // Create hamburger button
+        const navToggle = document.createElement('button');
+        navToggle.className = 'nav-toggle';
+        navToggle.id = 'mobile-nav-toggle';
+        navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        navToggle.setAttribute('aria-label', 'Toggle Navigation Menu');
+        
+        // Append to nav
+        navElement.appendChild(navToggle);
+        
+        // Toggle class on click
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navElement.classList.toggle('nav-open');
+            const isOpen = navElement.classList.contains('nav-open');
+            navToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu if clicking outside
+        document.addEventListener('click', (e) => {
+            if (navElement.classList.contains('nav-open') && !navElement.contains(e.target)) {
+                navElement.classList.remove('nav-open');
+                navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+    }
 });
