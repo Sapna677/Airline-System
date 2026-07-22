@@ -267,6 +267,11 @@ document.addEventListener('DOMContentLoaded', () => {
 						Scan this QR code using any UPI App (Google Pay, PhonePe, Paytm, BHIM) to complete checkout.
 					</p>
 
+					<!-- Mobile Pay Button (Visible on mobile/touch devices) -->
+					<a id="upiAppPayBtn" href="#" class="btn-primary" style="width: 100%; margin-bottom: 12px; background: linear-gradient(135deg, #10b981, #059669); border: none; text-decoration: none; display: none; align-items: center; justify-content: center; gap: 8px;" onclick="setTimeout(simulateQRPayment, 1500)">
+						<i class="fas fa-mobile-alt"></i> Pay via UPI App (GPay/PhonePe)
+					</a>
+
 					<!-- Simulate successful click (P2P free transactions) -->
 					<button type="button" class="btn-primary" onclick="simulateQRPayment()" style="width: 100%;">
 						<i class="fas fa-check-circle"></i> Simulate Successful Payment (Free)
@@ -300,6 +305,15 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (qrImg) {
 					qrImg.src = qrApiUrl;
 					console.log("QR Code updated for amount: INR " + amount);
+				}
+				
+				// Update UPI mobile pay button
+				const upiAppBtn = document.getElementById('upiAppPayBtn');
+				if (upiAppBtn) {
+					upiAppBtn.href = upiUrl;
+					if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 600) {
+						upiAppBtn.style.display = 'inline-flex';
+					}
 				}
 			} catch (e) {
 				console.error("Error generating dynamic QR code: ", e);
