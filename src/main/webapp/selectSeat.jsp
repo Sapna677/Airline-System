@@ -167,8 +167,15 @@
         <ul>
             <li><a href="index.jsp">Home</a></li>
             <li><a href="searchFlights.jsp">Search Flights</a></li>
+            <li><a href="flightStatus.jsp">Flight Status</a></li>
+            <li><a href="baggageCalculator.jsp">Baggage</a></li>
             <li><a href="contact.jsp">Contact</a></li>
-            <li><a href="about.jsp">About</a></li>
+            <% if (session.getAttribute("email") != null) { %>
+                <li><a href="profile.jsp"><i class="fas fa-user-circle"></i> Profile</a></li>
+            <% } else { %>
+                <li><a href="login.jsp">Login</a></li>
+                <li><a href="signUp.jsp">Signup</a></li>
+            <% } %>
         </ul>
     </nav>
 
