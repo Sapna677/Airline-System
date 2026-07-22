@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="java.sql.*, mypack.DatabaseUtil"%>
+	pageEncoding="ISO-8859-1" import="java.sql.*, mypack.DatabaseUtil" isELIgnored="true"%>
 <%
     // Prevent browser back-button caching
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
