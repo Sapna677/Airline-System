@@ -891,29 +891,6 @@ footer .footer-section .footer-subscribe button:hover {
 }
 
 @media (max-width: 600px) {
-    nav {
-        flex-direction: column;
-        height: auto;
-        padding: 15px 20px;
-        gap: 12px;
-        position: relative;
-        text-align: center;
-    }
-    .page-container {
-        padding-top: 20px;
-        min-height: calc(100vh - 20px);
-    }
-    nav ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-        gap: 8px;
-    }
-    nav ul li a {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-    }
     .glass-card, main.standalone-container {
         padding: 25px 20px;
         margin: 15px auto;
@@ -1221,7 +1198,11 @@ body, nav, .glass-card, .standalone-container, input, select, button, a {
     }
     .page-container {
         padding-top: 95px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
         min-height: calc(100vh - 95px) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
     .hero-section h1 {
         font-size: 2.2rem;
@@ -1232,11 +1213,19 @@ body, nav, .glass-card, .standalone-container, input, select, button, a {
     .glass-card {
         padding: 25px 20px;
         margin: 20px auto;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
     .signup-form-grid, 
     .search-flights-grid {
         grid-template-columns: 1fr !important;
         gap: 15px !important;
+    }
+    .icon-scroll {
+        display: none !important;
+    }
+    .cover {
+        width: 100% !important;
     }
     body {
         display: flex;
